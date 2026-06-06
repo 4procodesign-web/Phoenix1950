@@ -72,6 +72,8 @@ body{background:var(--bg);color:var(--txt);font-family:'Lato',sans-serif;font-we
 .admin-btn.minus{border-color:var(--red);color:var(--red)}.admin-btn.minus:hover{background:var(--red);color:#fff}
 .admin-count{font-size:.9rem;font-weight:700;min-width:30px;text-align:center}
 .admin-count .full{color:var(--red)}
+.admin-fab{position:fixed;bottom:24px;right:24px;width:56px;height:56px;border-radius:50%;background:var(--gold);color:var(--bg);border:none;font-size:1.5rem;cursor:pointer;z-index:999;box-shadow:0 4px 16px rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;transition:transform .2s,background .2s}
+.admin-fab:hover{transform:scale(1.1);background:var(--gold2)}
 @media(max-width:768px){.photo-grid{grid-template-columns:1fr}.bio{flex-direction:column;text-align:center}.hero-s{gap:1.5rem}.pay-d{flex-direction:column;gap:.5rem}}
 @media print{.btn-reserve,.admin-panel,.qr-section{display:none!important}body{background:#fff;color:#1a1a1a}.photo-card{break-inside:avoid;border-color:#ddd;background:#fff}.hero{min-height:auto;padding:2rem;background:#fff}.hero-t,.hero-p,.price,.category-header h2,.code{color:#8a6d1b!important}}
 </style>
@@ -1458,13 +1460,22 @@ window.closeAdmin=function(){document.getElementById('adminPanel').classList.rem
 function uAdmin(){
 var h='',ts=0,tv=0;
 P.forEach(function(p){var s=gS(p.code);ts+=s;if(s>0)tv+=p.price*s;
-h+='<div class="admin-item"><span class="admin-name">'+p.name+'</span><span class="admin-price">'+p.price+'€</span><div class="admin-controls"><button class="admin-btn minus" onclick="aM(''+p.code+'')">−</button><span class="admin-count"><span class="'+(s>=2?'full':'')+'">'+s+'</span>/2</span><button class="admin-btn" onclick="aP(''+p.code+'')">+</button></div></div>'});
+h+='<div class="admin-item"><span class="admin-name">'+p.name+'</span><span class="admin-price">'+p.price+'€</span><div class="admin-controls"><button class="admin-btn minus" onclick="aM(\''+p.code+'\')">−</button><span class="admin-count"><span class="'+(s>=2?'full':'')+'">'+s+'</span>/2</span><button class="admin-btn" onclick="aP(\''+p.code+'\')">+</button></div></div>'});
 document.getElementById('adminSummary').innerHTML='Vendus : <strong>'+ts+'/'+(P.length*2)+'</strong> — Recettes : <strong>'+tv+' €</strong>';
 document.getElementById('adminList').innerHTML=h}
+window.uAdmin=uAdmin;
 window.aP=function(c){var s=gS(c);if(s<2){sS(c,s+1);uAll()}};
 window.aM=function(c){var s=gS(c);if(s>0){sS(c,s-1);uAll()}};
 uAll();
 })();
+</script>
+<button class="admin-fab" id="adminFab" title="Administration">⚙</button>
+<script>
+document.getElementById('adminFab').addEventListener('click',function(){
+var pw=prompt('Code administrateur :');
+if(pw==='01091950'){document.getElementById('adminPanel').classList.add('visible');if(typeof uAdmin==='function')uAdmin()}
+else if(pw!==null){alert('Code incorrect')}
+});
 </script>
 </body>
 </html>
